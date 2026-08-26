@@ -7,31 +7,34 @@ export function Footer() {
   const socialLinks = [
     {
       icon: Linkedin,
-      href: 'https://linkedin.com/in/alexnguyen',
+      href: 'https://www.linkedin.com/in/thuy-trang-nguyen-k67hus/',
       label: 'LinkedIn'
     },
     {
       icon: Github,
-      href: 'https://github.com/alexnguyen',
+      href: 'https://github.com/aya1101',
       label: 'GitHub'
     },
     {
       icon: Mail,
-      href: 'mailto:alex.nguyen@email.com',
+      href: 'mailto:thuytrang.aya2004@gmail.com',
       label: 'Email'
-    },
-    {
+    }
+    /**
+     {
       icon: Twitter,
       href: 'https://twitter.com/alexnguyen',
       label: 'Twitter'
     }
+     */
+    
   ];
 
   return (
     <footer className="bg-card border-t border-border py-12 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center">
-          <div className="text-2xl font-bold gradient-text mb-4">Alex Nguyen</div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-[#1a237e] to-[#ffb7d5] bg-clip-text text-transparent mb-4" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t('fullName')}</div>
           <p className="text-muted-foreground mb-6">{t('footerRole')}</p>
           
           <div className="flex justify-center space-x-6 mb-8">
@@ -43,21 +46,16 @@ export function Footer() {
                   href={link.href}
                   target={link.href.startsWith('http') ? '_blank' : undefined}
                   rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="gradient-contact-icon transition-colors"
                   aria-label={link.label}
                   data-testid={`footer-social-${index}`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-5 w-5 gradient-contact-icon" />
                 </a>
               );
             })}
           </div>
           
-          <div className="border-t border-border pt-8">
-            <p className="text-muted-foreground text-sm" data-testid="footer-copyright">
-              {t('footerCopyright')}
-            </p>
-          </div>
         </div>
       </div>
     </footer>

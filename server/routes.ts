@@ -50,7 +50,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // CV download endpoint
   app.get("/api/download-cv", async (req, res) => {
     try {
-      const cvPath = path.resolve(import.meta.dirname, "..", "client", "public", "Alex-Nguyen-CV.html");
+      const cvPath = path.resolve(import.meta.dirname, "..", "client", "public", "CV_NguyenThuyTrang.pdf");
       
       if (!fs.existsSync(cvPath)) {
         return res.status(404).json({ 
@@ -59,10 +59,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const cvContent = fs.readFileSync(cvPath, 'utf-8');
+      const cvContent = fs.readFileSync(cvPath);
       
-      res.setHeader('Content-Type', 'text/html');
-      res.setHeader('Content-Disposition', 'attachment; filename="Alex-Nguyen-CV.html"');
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="CV_NguyenThuyTrang.pdf"');
       res.send(cvContent);
     } catch (error) {
       res.status(500).json({ 

@@ -168,4 +168,20 @@
       transform: translateY(0);
     }
   }
+
+  /* Gradient icon utility for Lucide/heroicons etc. */
+  .gradient-contact-icon {
+    background: linear-gradient(90deg, #1a237e 0%, #ffb7d5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Gradient border utility for form elements */
+  .gradient-border {
+    border: 2px solid;
+    border-image: linear-gradient(90deg, #1a237e 0%, #ffb7d5 100%);
+    border-image-slice: 1;
+  }
 }

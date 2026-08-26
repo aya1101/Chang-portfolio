@@ -5,36 +5,13 @@ import { useLanguage } from '@/hooks/use-language';
 export function HeroSection() {
   const { t } = useLanguage();
 
-  const handleDownloadCV = async () => {
-    try {
-      // Fetch the CV file from the API endpoint
-      const response = await fetch('/api/download-cv');
-      
-      if (!response.ok) {
-        throw new Error('Failed to download CV');
-      }
-      
-      // Create a blob from the response
-      const blob = await response.blob();
-      
-      // Create a temporary link element to trigger download
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'Alex-Nguyen-CV.html';
-      
-      // Append to body, click, and remove
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the object URL
-      URL.revokeObjectURL(link.href);
-      
-      console.log('CV download completed successfully!');
-    } catch (error) {
-      console.error('Error downloading CV:', error);
-      // You could also show a toast notification here
-    }
+  const handleDownloadCV = () => {
+    const link = document.createElement('a');
+    link.href = `${import.meta.env.BASE_URL}CV_Nguyen_Thuy_Trang.pdf`;
+    link.download = 'CV_Nguyen_Thuy_Trang.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const scrollToProjects = () => {
@@ -49,8 +26,8 @@ export function HeroSection() {
       <div className="max-w-4xl mx-auto text-center">
         <div className="animate-float mb-8">
           <img 
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300" 
-            alt="Alex Nguyen - Profile Photo" 
+            src={`${import.meta.env.BASE_URL}z7018565041294_8688932380548668631c90deaede4d1d.jpg`} 
+            alt="Thuy Trang Nguyen - Profile Image" 
             className="w-32 h-32 rounded-full mx-auto shadow-2xl border-4 border-white object-cover"
             data-testid="profile-image"
           />
@@ -58,7 +35,12 @@ export function HeroSection() {
         
         <h1 className="text-5xl md:text-6xl font-bold mb-4 slide-in-up">
           <span>{t('hiIm')}</span>{' '}
-          <span className="gradient-text">Alex Nguyen</span>
+          <span
+            className="bg-gradient-to-r from-[#1a237e] to-[#ffb7d5] bg-clip-text text-transparent px-2 rounded-md inline-block"
+            style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          >
+            {t('fullName')}
+          </span>
         </h1>
         
         <h2 className="text-xl md:text-2xl text-muted-foreground mb-6 fade-in-delay">
@@ -93,7 +75,7 @@ export function HeroSection() {
         {/* Social Links */}
         <div className="flex justify-center space-x-6 mt-12 fade-in-delay">
           <a 
-            href="https://linkedin.com/in/alexnguyen" 
+            href="https://www.linkedin.com/in/thuy-trang-nguyen-k67hus/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition-colors"
@@ -105,7 +87,7 @@ export function HeroSection() {
           </a>
           
           <a 
-            href="https://github.com/alexnguyen" 
+            href="https://github.com/aya1101" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition-colors"
@@ -117,7 +99,7 @@ export function HeroSection() {
           </a>
           
           <a 
-            href="mailto:alex.nguyen@email.com"
+            href="mailto:thuytrang.aya2004@gmail.com"
             className="text-muted-foreground hover:text-primary transition-colors"
             data-testid="social-email"
           >

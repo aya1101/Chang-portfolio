@@ -1,18 +1,15 @@
-import { useState } from 'react';
-import { Mail, Linkedin, Github, Loader2 } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Mail, Linkedin, Github, Phone, Globe2 } from 'lucide-react';
+import { Card } from '@/components/ui/card2';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea2';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select2';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/use-language';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { insertContactMessageSchema } from '@shared/schema';
-import { apiRequest } from '@/lib/queryClient';
 import { z } from 'zod';
 
 type ContactFormData = z.infer<typeof insertContactMessageSchema>;
@@ -20,10 +17,9 @@ type ContactFormData = z.infer<typeof insertContactMessageSchema>;
 export function ContactSection() {
   const { t } = useLanguage();
   const { toast } = useToast();
-  
   const {
     register,
-    handleSubmit,
+    handleSubmit, // vẫn giữ để validate
     setValue,
     watch,
     reset,
@@ -41,64 +37,73 @@ export function ContactSection() {
     }
   });
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: ContactFormData) => {
-      return apiRequest('POST', '/api/contact', data);
-    },
-    onSuccess: () => {
-      toast({
-        title: t('messageSent'),
-        description: "I'll get back to you soon!",
-      });
-      reset();
-    },
-    onError: () => {
-      toast({
-        title: t('messageError'),
-        variant: "destructive",
-      });
-    }
-  });
-
-  const onSubmit = (data: ContactFormData) => {
-    contactMutation.mutate(data);
-  };
-
   const contactInfo = [
     {
       icon: Mail,
       title: t('email'),
-      value: 'alex.nguyen@email.com',
+      value: 'thuytrang.aya2004@gmail.com',
       description: t('emailDesc'),
       color: 'text-primary',
       bg: 'bg-primary/10',
-      href: 'mailto:alex.nguyen@email.com'
+      href: 'mailto:thuytrang.aya2004@gmail.com'
     },
     {
       icon: Linkedin,
       title: t('linkedin'),
-      value: 'linkedin.com/in/alexnguyen',
+      value: 'linkedin.com/in/thuy-trang-nguyen-k67hus',
       description: t('linkedinDesc'),
       color: 'text-secondary',
       bg: 'bg-secondary/10',
-      href: 'https://linkedin.com/in/alexnguyen'
+      href: 'https://www.linkedin.com/in/thuy-trang-nguyen-k67hus/'
     },
     {
       icon: Github,
       title: t('github'),
-      value: 'github.com/alexnguyen',
+      value: 'github.com/aya1101',
       description: t('githubDesc'),
       color: 'text-accent',
       bg: 'bg-accent/10',
-      href: 'https://github.com/alexnguyen'
+      href: 'https://github.com/aya1101'
+    },
+    {
+      icon: Phone,
+      title: t('phone'),
+      value: '+84 974 862 811',
+      description: t('phoneDesc'),
+      color: 'text-green-600',
+      bg: 'bg-green-100',
+      href: 'tel:+84974862811'
+    },
+    {
+      icon: Globe2,
+      title: t('portfolio'),
+      value: 'changportfolio-latest.onrender.com',
+      description: t('portfolioDesc'),
+      color: 'text-blue-600',
+      bg: 'bg-blue-100',
+      href: 'https://changportfolio-latest.onrender.com/'
     }
   ];
 
   return (
-    <section id="contact" className="py-20 px-6">
+    <>
+      <svg width="0" height="0">
+        <defs>
+          <linearGradient id="contact-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop stopColor="#1a237e" offset="0%" />
+            <stop stopColor="#ffb7d5" offset="100%" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <section id="contact" className="py-20 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 gradient-text">{t('letsConnect')}</h2>
+          <h2
+            className="text-4xl font-bold mb-4 gradient-text"
+            style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', backgroundImage: 'linear-gradient(90deg, #1a237e 0%, #ffb7d5 100%)' }}
+          >
+            {t('letsConnect')}
+          </h2>
           <p className="text-muted-foreground text-lg">{t('contactSubtitle')}</p>
         </div>
         
@@ -117,15 +122,17 @@ export function ContactSection() {
                 >
                   <Card className="p-6 hover-lift transition-all">
                     <div className="flex items-center space-x-4 mb-4">
-                      <div className={`${info.bg} p-3 rounded-full`}>
-                        <Icon className={`${info.color} h-5 w-5`} />
+                      <div className={`bg-white p-3 rounded-full`}>
+                        <Icon className="h-5 w-5" stroke="url(#contact-gradient)" />
                       </div>
                       <div>
                         <h3 className="font-semibold">{info.title}</h3>
                         <p className="text-muted-foreground">{info.value}</p>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{info.description}</p>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{info.description}</p>
+                    </div>
                   </Card>
                 </a>
               );
@@ -134,14 +141,14 @@ export function ContactSection() {
           
           {/* Contact Form */}
           <Card className="p-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form action="https://formspree.io/f/xyzdqoqb" method="POST" className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">{t('firstName')}</Label>
                   <Input
                     id="firstName"
                     {...register('firstName')}
-                    className="mt-2"
+                    className="mt-2 gradient-border rounded-lg"
                     data-testid="input-first-name"
                   />
                   {errors.firstName && (
@@ -155,7 +162,7 @@ export function ContactSection() {
                   <Input
                     id="lastName"
                     {...register('lastName')}
-                    className="mt-2"
+                    className="mt-2 gradient-border rounded-lg"
                     data-testid="input-last-name"
                   />
                   {errors.lastName && (
@@ -165,14 +172,13 @@ export function ContactSection() {
                   )}
                 </div>
               </div>
-              
               <div>
                 <Label htmlFor="email">{t('email')}</Label>
                 <Input
                   id="email"
                   type="email"
                   {...register('email')}
-                  className="mt-2"
+                  className="mt-2 gradient-border rounded-lg"
                   data-testid="input-email"
                 />
                 {errors.email && (
@@ -181,14 +187,13 @@ export function ContactSection() {
                   </p>
                 )}
               </div>
-              
               <div>
                 <Label htmlFor="subject">{t('subject')}</Label>
-                <Select 
+                <Select
                   value={watch('subject')} 
                   onValueChange={(value) => setValue('subject', value)}
                 >
-                  <SelectTrigger className="mt-2" data-testid="select-subject">
+                  <SelectTrigger className="mt-2 gradient-border rounded-lg" data-testid="select-subject">
                     <SelectValue placeholder={t('subject')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -204,14 +209,13 @@ export function ContactSection() {
                   </p>
                 )}
               </div>
-              
               <div>
                 <Label htmlFor="message">{t('message')}</Label>
                 <Textarea
                   id="message"
                   {...register('message')}
                   rows={4}
-                  className="mt-2 resize-none"
+                  className="mt-2 resize-none gradient-border rounded-lg"
                   data-testid="textarea-message"
                 />
                 {errors.message && (
@@ -220,26 +224,18 @@ export function ContactSection() {
                   </p>
                 )}
               </div>
-              
               <Button 
                 type="submit" 
                 className="w-full hover-lift"
-                disabled={contactMutation.isPending}
                 data-testid="submit-contact-form"
               >
-                {contactMutation.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  t('sendMessage')
-                )}
+                {t('sendMessage')}
               </Button>
             </form>
           </Card>
         </div>
       </div>
     </section>
+  </>
   );
 }
