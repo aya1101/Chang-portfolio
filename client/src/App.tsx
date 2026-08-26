@@ -8,8 +8,10 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 
 function Router() {
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
   return (
-    <WouterRouter base={import.meta.env.BASE_URL}>
+    <WouterRouter base={basePath}>
       <Switch>
         <Route path="/" component={Home} />
         <Route component={NotFound} />
